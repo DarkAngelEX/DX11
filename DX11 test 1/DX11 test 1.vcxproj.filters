@@ -21,108 +21,108 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="d3dApp.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="GameApp.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="GameTimer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="WICTextureLoader.cpp">
+    <ClCompile Include="Common\WICTextureLoader.cpp">
       <Filter>通用文件</Filter>
     </ClCompile>
-    <ClCompile Include="d3dUtil.cpp">
+    <ClCompile Include="Common\RenderStates.cpp">
       <Filter>通用文件</Filter>
     </ClCompile>
-    <ClCompile Include="DXTrace.cpp">
+    <ClCompile Include="Common\DXTrace.cpp">
       <Filter>通用文件</Filter>
     </ClCompile>
-    <ClCompile Include="RenderStates.cpp">
+    <ClCompile Include="Common\d3dUtil.cpp">
       <Filter>通用文件</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
+    <ClCompile Include="DX Game\d3dApp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DX Game\GameApp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DX Game\GameObject.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DX Game\GameTimer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\pch.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DX Game\main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="d3dApp.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GameApp.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GameTimer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="WICTextureLoader.h">
+    <ClInclude Include="Common\WICTextureLoader.h">
       <Filter>通用文件</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.h">
+    <ClInclude Include="Common\Vertex.h">
+      <Filter>通用文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\RenderStates.h">
+      <Filter>通用文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DXTrace.h">
+      <Filter>通用文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\d3dUtil.h">
+      <Filter>通用文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Geometry.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="d3dUtil.h">
-      <Filter>通用文件</Filter>
+    <ClInclude Include="Common\pch.h">
+      <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="DXTrace.h">
-      <Filter>通用文件</Filter>
+    <ClInclude Include="DX Game\d3dApp.h">
+      <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>通用文件</Filter>
+    <ClInclude Include="DX Game\GameApp.h">
+      <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="RenderStates.h">
-      <Filter>通用文件</Filter>
+    <ClInclude Include="DX Game\GameObject.h">
+      <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
+    <ClInclude Include="DX Game\GameTimer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Triangle.hlsli">
+    <None Include="HLSL\Triangle.hlsli">
       <Filter>着色器</Filter>
     </None>
-    <None Include="Basic.hlsli">
+    <None Include="HLSL\Basic.hlsli">
       <Filter>着色器</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Triangle_VS.hlsl">
+    <FxCompile Include="HLSL\Triangle_PS.hlsl">
       <Filter>着色器</Filter>
     </FxCompile>
-    <FxCompile Include="Triangle_PS.hlsl">
+    <FxCompile Include="HLSL\Triangle_VS.hlsl">
       <Filter>着色器</Filter>
     </FxCompile>
-    <FxCompile Include="VS_2D.hlsl">
+    <FxCompile Include="HLSL\VS_2D.hlsl">
       <Filter>着色器</Filter>
     </FxCompile>
-    <FxCompile Include="PS_2D.hlsl">
+    <FxCompile Include="HLSL\PS_2D.hlsl">
       <Filter>着色器</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="test.bmp">
+    <Image Include="Resource\test.bmp">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="test1 small.png">
+    <Image Include="Resource\test1 small.png">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="test1.png">
+    <Image Include="Resource\test1.png">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="test2 small.png">
+    <Image Include="Resource\test2 small.png">
       <Filter>资源文件</Filter>
     </Image>
-    <Image Include="test2.png">
+    <Image Include="Resource\test2.png">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

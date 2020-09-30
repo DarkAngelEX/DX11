@@ -110,27 +110,27 @@ bool GameApp::InitEffect()
 	//3D 部分
 
 	// 创建顶点着色器
-	HR(CreateShaderFromFile(LR"(Triangle_VS.cso)", LR"(Triangle_VS.hlsl)", "VS", "vs_5_0", blob.ReleaseAndGetAddressOf()));
+	HR(CreateShaderFromFile(LR"(HLSL\Triangle_VS.cso)", LR"(HLSL\Triangle_VS.hlsl)", "VS", "vs_5_0", blob.ReleaseAndGetAddressOf()));
 	HR(m_pd3dDevice->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pVertexShader.GetAddressOf()));
 	// 创建并绑定顶点布局
 	HR(m_pd3dDevice->CreateInputLayout(VertexPosColor::inputLayout, ARRAYSIZE(VertexPosColor::inputLayout),
 		blob->GetBufferPointer(), blob->GetBufferSize(), m_pVertexLayout.GetAddressOf()));
 
 	// 创建像素着色器
-	HR(CreateShaderFromFile(LR"(Triangle_PS.cso)", LR"(Triangle_PS.hlsl)", "PS", "ps_5_0", blob.ReleaseAndGetAddressOf()));
+	HR(CreateShaderFromFile(LR"(HLSL\Triangle_PS.cso)", LR"(HLSL\Triangle_PS.hlsl)", "PS", "ps_5_0", blob.ReleaseAndGetAddressOf()));
 	HR(m_pd3dDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pPixelShader.GetAddressOf()));
 
 	//2D部分
 
 	// 创建顶点着色器(2D)
-	HR(CreateShaderFromFile(L"VS_2D.cso", L"VS_2D.hlsl", "VS_2D", "vs_5_0", blob.ReleaseAndGetAddressOf()));
+	HR(CreateShaderFromFile(LR"(HLSL\VS_2D.cso)", LR"(HLSL\VS_2D.hlsl)", "VS_2D", "vs_5_0", blob.ReleaseAndGetAddressOf()));
 	HR(m_pd3dDevice->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pVertexShader2D.GetAddressOf()));
 	// 创建顶点布局(2D)
 	HR(m_pd3dDevice->CreateInputLayout(VertexPosTex::inputLayout, ARRAYSIZE(VertexPosTex::inputLayout),
 		blob->GetBufferPointer(), blob->GetBufferSize(), m_pVertexLayout2D.GetAddressOf()));
 
 	// 创建像素着色器(2D)
-	HR(CreateShaderFromFile(L"PS_2D.cso", L"PS_2D.hlsl", "PS_2D", "ps_5_0", blob.ReleaseAndGetAddressOf()));
+	HR(CreateShaderFromFile(LR"(HLSL\PS_2D.cso)", LR"(HLSL\PS_2D.hlsl)", "PS_2D", "ps_5_0", blob.ReleaseAndGetAddressOf()));
 	HR(m_pd3dDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pPixelShader2D.GetAddressOf()));
 
 	return true;
@@ -222,7 +222,8 @@ bool GameApp::InitResource()
 	sample->SetTexture(m_pd3dDevice.Get(), L"test1.png", 0);
 	sample->SetTexture(m_pd3dDevice.Get(), L"test2.png", 1);
 #elif 1
-	sample->SetTexture(m_pd3dDevice.Get(), m_pd3dImmediateContext.Get(), { L"test1.png" , L"test2.png" }, false);
+	sample->SetTexture(m_pd3dDevice.Get(), m_pd3dImmediateContext.Get(), 
+		{ LR"(Resource\test1.png)" , LR"(Resource\test2.png)" }, false);
 #endif
 	auto meshData = Geometry::Create2DShow();
 	sample->SetBuffer(m_pd3dDevice.Get(), meshData);
