@@ -109,4 +109,21 @@
       <Filter>着色器</Filter>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="test.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="test1 small.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="test1.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="test2 small.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="test2.png">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

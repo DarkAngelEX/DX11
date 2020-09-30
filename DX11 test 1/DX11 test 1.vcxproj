@@ -274,6 +274,13 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_2D</EntryPointName>
     </FxCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="test.bmp" />
+    <Image Include="test1 small.png" />
+    <Image Include="test1.png" />
+    <Image Include="test2 small.png" />
+    <Image Include="test2.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
