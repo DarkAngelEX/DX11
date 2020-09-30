@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DX11 TEST", "DX11 TEST", "{0AC44BBC-3E25-430C-A8F5-E910F880FB33}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DX11 test 1", "DX11 test 1\DX11 test 1.vcxproj", "{599FBDB1-07DB-4D4B-AF36-EB4F918802D1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{599FBDB1-07DB-4D4B-AF36-EB4F918802D1}.Debug|x64.ActiveCfg = Debug|x64
+		{599FBDB1-07DB-4D4B-AF36-EB4F918802D1}.Debug|x64.Build.0 = Debug|x64
+		{599FBDB1-07DB-4D4B-AF36-EB4F918802D1}.Debug|x86.ActiveCfg = Debug|Win32
+		{599FBDB1-07DB-4D4B-AF36-EB4F918802D1}.Debug|x86.Build.0 = Debug|Win32
+		{599FBDB1-07DB-4D4B-AF36-EB4F918802D1}.Release|x64.ActiveCfg = Release|x64
+		{599FBDB1-07DB-4D4B-AF36-EB4F918802D1}.Release|x64.Build.0 = Release|x64
+		{599FBDB1-07DB-4D4B-AF36-EB4F918802D1}.Release|x86.ActiveCfg = Release|Win32
+		{599FBDB1-07DB-4D4B-AF36-EB4F918802D1}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{599FBDB1-07DB-4D4B-AF36-EB4F918802D1} = {0AC44BBC-3E25-430C-A8F5-E910F880FB33}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DA925FE2-EE1B-4256-8E81-29248636A915}
+	EndGlobalSection
+EndGlobal
