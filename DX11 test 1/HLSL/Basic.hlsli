@@ -19,7 +19,7 @@ struct VertexPosHTex
 {
     float4 PosH : SV_POSITION;
     float2 Tex : TEXCOORD;
-    float PrimID : ID;
+    float PrimID : NORMAL;
 };
 
 

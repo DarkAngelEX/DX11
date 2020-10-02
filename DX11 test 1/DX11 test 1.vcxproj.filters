@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="源文件">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="资源文件">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -18,6 +10,16 @@
     </Filter>
     <Filter Include="通用文件">
       <UniqueIdentifier>{61558a59-943a-4971-9156-1362dba88294}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DX Game">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{1edf8f65-4bc7-4264-b101-6508c5595b8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Effect">
+      <UniqueIdentifier>{aaeb560f-6425-441c-90b3-14173e035f85}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -34,22 +36,25 @@
       <Filter>通用文件</Filter>
     </ClCompile>
     <ClCompile Include="DX Game\d3dApp.cpp">
-      <Filter>源文件</Filter>
+      <Filter>DX Game</Filter>
     </ClCompile>
     <ClCompile Include="DX Game\GameApp.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="DX Game\GameObject.cpp">
-      <Filter>源文件</Filter>
+      <Filter>DX Game</Filter>
     </ClCompile>
     <ClCompile Include="DX Game\GameTimer.cpp">
-      <Filter>源文件</Filter>
+      <Filter>DX Game</Filter>
     </ClCompile>
     <ClCompile Include="Common\pch.cpp">
-      <Filter>源文件</Filter>
+      <Filter>DX Game</Filter>
     </ClCompile>
     <ClCompile Include="DX Game\main.cpp">
-      <Filter>源文件</Filter>
+      <Filter>DX Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\MapBase.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject\GameObject.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,40 +73,37 @@
     <ClInclude Include="Common\d3dUtil.h">
       <Filter>通用文件</Filter>
     </ClInclude>
-    <ClInclude Include="Common\Geometry.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Common\pch.h">
-      <Filter>头文件</Filter>
+      <Filter>DX Game</Filter>
     </ClInclude>
     <ClInclude Include="DX Game\d3dApp.h">
-      <Filter>头文件</Filter>
+      <Filter>DX Game</Filter>
     </ClInclude>
     <ClInclude Include="DX Game\GameApp.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="DX Game\GameObject.h">
-      <Filter>头文件</Filter>
+      <Filter>DX Game</Filter>
     </ClInclude>
     <ClInclude Include="DX Game\GameTimer.h">
-      <Filter>头文件</Filter>
+      <Filter>DX Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Geometry.h">
+      <Filter>通用文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\MapBase.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject\GameObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderBase.h">
+      <Filter>Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="HLSL\Triangle.hlsli">
-      <Filter>着色器</Filter>
-    </None>
     <None Include="HLSL\Basic.hlsli">
       <Filter>着色器</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="HLSL\Triangle_PS.hlsl">
-      <Filter>着色器</Filter>
-    </FxCompile>
-    <FxCompile Include="HLSL\Triangle_VS.hlsl">
-      <Filter>着色器</Filter>
-    </FxCompile>
     <FxCompile Include="HLSL\VS_2D.hlsl">
       <Filter>着色器</Filter>
     </FxCompile>

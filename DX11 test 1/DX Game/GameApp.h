@@ -1,10 +1,12 @@
-#pragma once
+ï»¿#pragma once
 #include "d3dApp.h"
 #include "Geometry.h"
 #include "RenderStates.h"
 #include "WICTextureLoader.h"
 #include "DXTrace.h"
+#include "ShaderBase.h"
 #include "GameObject.h"
+#include "MapBase.h"
 
 class GameApp : public D3DApp
 {
@@ -18,9 +20,9 @@ public:
 			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 	};
-	struct VSConstantBuffer	//³£Á¿»º³å¹¦ÄÜÇø±ØĞë16×Ö½Ú¶ÔÆë
+	struct VSConstantBuffer	//å¸¸é‡ç¼“å†²åŠŸèƒ½åŒºå¿…é¡»16å­—èŠ‚å¯¹é½
 	{
-		DirectX::XMFLOAT4 pos;
+		DirectX::XMFLOAT4 pos = {0,0,0,0};
 	};
 
 
@@ -58,32 +60,33 @@ public:
 
 
 private:
+	//åˆå§‹åŒ–ç€è‰²å™¨
 	bool InitEffect();
+	//åˆå§‹åŒ–èµ„æº
 	bool InitResource();
-
+	//æ ¹æ®å¯¹è±¡è‡ªåŠ¨åˆå§‹åŒ–èµ„æº
 	template<class VertexType>
 	bool ResetMesh(const Geometry::MeshData<VertexType>& meshData);
 
 private:
+	std::unique_ptr<MapBase> map;
 	std::unique_ptr<GameObject> sample;
 
-	ComPtr<ID3D11InputLayout> m_pVertexLayout2D;		// ÓÃÓÚ2DµÄ¶¥µãÊäÈë²¼¾Ö
-	ComPtr<ID3D11InputLayout> m_pVertexLayout;			// ¶¥µãÊäÈë²¼¾Ö
-	ComPtr<ID3D11InputLayout> m_pConstantLayout;		// ³£Á¿ÊäÈë²¼¾Ö
+	ComPtr<ID3D11InputLayout> m_pVertexLayout2D;		// ç”¨äº2Dçš„é¡¶ç‚¹è¾“å…¥å¸ƒå±€
 
-	ComPtr<ID3D11Buffer> m_pVertexBuffer;				// ¶¥µã»º³åÇø
-	ComPtr<ID3D11Buffer> m_pIndexBuffer;				// Ë÷Òı»º³åÇø
-	ComPtr<ID3D11Buffer> m_pConstantBuffers;			// ³£Á¿»º³åÇø
+	ComPtr<ID3D11Buffer> m_pVertexBuffer;				// é¡¶ç‚¹ç¼“å†²åŒº
+	ComPtr<ID3D11Buffer> m_pIndexBuffer;				// ç´¢å¼•ç¼“å†²åŒº
+	ComPtr<ID3D11Buffer> m_pConstantBuffers;			// å¸¸é‡ç¼“å†²åŒº
 
-	UINT m_IndexCount;									// »æÖÆÎïÌåµÄË÷ÒıÊı×é´óĞ¡
+	UINT m_IndexCount = 0;									// ç»˜åˆ¶ç‰©ä½“çš„ç´¢å¼•æ•°ç»„å¤§å°
 
-	ComPtr<ID3D11VertexShader> m_pVertexShader;			// ¶¥µã×ÅÉ«Æ÷
-	ComPtr<ID3D11PixelShader> m_pPixelShader;			// ÏñËØ×ÅÉ«Æ÷
-	ComPtr<ID3D11VertexShader> m_pVertexShader2D;		// ÓÃÓÚ2DµÄ¶¥µã×ÅÉ«Æ÷
-	ComPtr<ID3D11PixelShader> m_pPixelShader2D;			// ÓÃÓÚ2DµÄÏñËØ×ÅÉ«Æ÷
+	ShaderBase shader2D;
+	ComPtr<ID3D11VertexShader> m_pVertexShader2D;		// ç”¨äº2Dçš„é¡¶ç‚¹ç€è‰²å™¨
+	ComPtr<ID3D11PixelShader> m_pPixelShader2D;			// ç”¨äº2Dçš„åƒç´ ç€è‰²å™¨
 
-	ComPtr<ID3D11ShaderResourceView> m_test_resource;
 
-	VSConstantBuffer m_VSConstantBuffer;		// ÓÃÓÚĞŞ¸ÄÓÃÓÚVSµÄGPU³£Á¿»º³åÇøµÄ±äÁ¿
+	//ComPtr<ID3D11ShaderResourceView> m_test_resource;
+
+	VSConstantBuffer m_VSConstantBuffer;		// ç”¨äºä¿®æ”¹ç”¨äºVSçš„GPUå¸¸é‡ç¼“å†²åŒºçš„å˜é‡
 
 };

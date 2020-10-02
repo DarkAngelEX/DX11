@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <wrl/client.h>
 #include <d3d11_1.h>
 
@@ -12,16 +12,16 @@ public:
 	static bool IsInit();
 
 	static void InitAll(ID3D11Device* device);
-	// Ê¹ÓÃComPtrÎŞĞèÊÖ¹¤ÊÍ·Å
+	// ä½¿ç”¨ComPtræ— éœ€æ‰‹å·¥é‡Šæ”¾
 
 public:
-	static ComPtr<ID3D11RasterizerState> RSWireframe;	// ¹âÕ¤»¯Æ÷×´Ì¬£ºÏß¿òÄ£Ê½
-	static ComPtr<ID3D11RasterizerState> RSNoCull;		// ¹âÕ¤»¯Æ÷×´Ì¬£ºÎŞ±³Ãæ²Ã¼ôÄ£Ê½
+	static ComPtr<ID3D11RasterizerState> RSWireframe;	// å…‰æ …åŒ–å™¨çŠ¶æ€ï¼šçº¿æ¡†æ¨¡å¼
+	static ComPtr<ID3D11RasterizerState> RSNoCull;		// å…‰æ …åŒ–å™¨çŠ¶æ€ï¼šæ— èƒŒé¢è£å‰ªæ¨¡å¼
 
-	static ComPtr<ID3D11SamplerState> SSLinearWrap;		// ²ÉÑùÆ÷×´Ì¬£ºÏßĞÔ¹ıÂË
-	static ComPtr<ID3D11SamplerState> SSAnistropicWrap;	// ²ÉÑùÆ÷×´Ì¬£º¸÷ÏîÒìĞÔ¹ıÂË
+	static ComPtr<ID3D11SamplerState> SSLinearWrap;		// é‡‡æ ·å™¨çŠ¶æ€ï¼šçº¿æ€§è¿‡æ»¤
+	static ComPtr<ID3D11SamplerState> SSAnistropicWrap;	// é‡‡æ ·å™¨çŠ¶æ€ï¼šå„é¡¹å¼‚æ€§è¿‡æ»¤
 
-	static ComPtr<ID3D11BlendState> BSNoColorWrite;		// »ìºÏ×´Ì¬£º²»Ğ´ÈëÑÕÉ«
-	static ComPtr<ID3D11BlendState> BSTransparent;		// »ìºÏ×´Ì¬£ºÍ¸Ã÷»ìºÏ
-	static ComPtr<ID3D11BlendState> BSAlphaToCoverage;	// »ìºÏ×´Ì¬£ºAlpha-To-Coverage
+	static ComPtr<ID3D11BlendState> BSNoColorWrite;		// æ··åˆçŠ¶æ€ï¼šä¸å†™å…¥é¢œè‰²
+	static ComPtr<ID3D11BlendState> BSTransparent;		// æ··åˆçŠ¶æ€ï¼šé€æ˜æ··åˆ
+	static ComPtr<ID3D11BlendState> BSAlphaToCoverage;	// æ··åˆçŠ¶æ€ï¼šAlpha-To-Coverage
 };

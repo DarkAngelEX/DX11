@@ -1,20 +1,15 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "GameApp.h"
 #include "d3dUtil.h"
 #include "DXTrace.h"
 #include <array>
 #include <vector>
 using namespace DirectX;
-#if 0
-const D3D11_INPUT_ELEMENT_DESC GameApp::VertexPosColor::inputLayout[2] = {
-	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-};
-#endif
+
 GameApp::GameApp(HINSTANCE hInstance)
 	: D3DApp(hInstance)
 {
-	std::vector<std::vector<int>>v;
+
 }
 
 GameApp::~GameApp()
@@ -26,15 +21,14 @@ bool GameApp::Init()
 	if (!D3DApp::Init())
 		return false;
 
-	// Îñ±ØÏÈ³õÊ¼»¯ËùÓĞäÖÈ¾×´Ì¬£¬ÒÔ¹©ÏÂÃæµÄÌØĞ§Ê¹ÓÃ
+	// åŠ¡å¿…å…ˆåˆå§‹åŒ–æ‰€æœ‰æ¸²æŸ“çŠ¶æ€ï¼Œä»¥ä¾›ä¸‹é¢çš„ç‰¹æ•ˆä½¿ç”¨
 	RenderStates::InitAll(m_pd3dDevice.Get());
-	// ±àÒë×ÅÉ«Æ÷
-	if (!InitEffect())
-		return false;
-	// ¼ÓÔØ×ÊÔ´
-	if (!InitResource())
-		return false;
-
+	// ç¼–è¯‘ç€è‰²å™¨
+	if (!InitEffect()) {
+		throw("ç€è‰²å™¨ç¼–è¯‘é”™è¯¯");
+	};
+	// åŠ è½½èµ„æº
+	if (!InitResource()) return false;
 	return true;
 }
 
@@ -48,25 +42,7 @@ void GameApp::UpdateScene(float dt)
 	static int i = 0;
 	i++;
 
-#if 0
-	ZeroMemory(&m_VSConstantBuffer, sizeof(m_VSConstantBuffer));
-	//m_VSConstantBuffer.pos.x = (FLOAT)rand() / RAND_MAX;
-	if (i % 2)m_VSConstantBuffer.pos = { 0.2,-0.1,0.1,0 };
-	else m_VSConstantBuffer.pos = { -0.2,0,-0.1,0 };
-	// ¸üĞÂ³£Á¿»º³åÇø
-	D3D11_MAPPED_SUBRESOURCE mappedData;
-	HR(m_pd3dImmediateContext->Map(m_pConstantBuffers.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedData));
-	memcpy_s(mappedData.pData, sizeof(VSConstantBuffer), &m_VSConstantBuffer, sizeof(VSConstantBuffer));
-	m_pd3dImmediateContext->Unmap(m_pConstantBuffers.Get(), 0);
-
-	
-	std::array<float, 4> black;
-	if (i % 20000 < 10000)black = { 0.0f, 0.0f, 0.0f, 1.0f };
-	else black = { 1.0f, 1.0f, 1.0f, 1.0f };	// RGBA = (0,0,0,255)
-	if(i%2) m_pd3dImmediateContext->ClearRenderTargetView(m_pRenderTargetView.Get(), black.data());
-#elif 0
-	//m_pd3dImmediateContext->PSSetShaderResources(0, 1, m_test_resource.GetAddressOf());
-#elif 1
+#if 1
 	sample->GetTransform().place = {0, 0, 0, 0};
 #endif
 }
@@ -75,166 +51,44 @@ void GameApp::DrawScene()
 {
 	assert(m_pd3dImmediateContext);
 	assert(m_pSwapChain);
-#if 0
-	//static float black[4] = { 0.0f, 0.0f, 0.0f, 1.0f };	// RGBA = (0,0,0,255)
-	//m_pd3dImmediateContext->ClearRenderTargetView(m_pRenderTargetView.Get(), black);
-	m_pd3dImmediateContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-
-	// »æÖÆÈı½ÇĞÎ
-	m_pd3dImmediateContext->Draw(3, 0);
-
-	UpdateScene(0);
-	m_pd3dImmediateContext->Draw(3, 0);
-
-	HR(m_pSwapChain->Present(0, 0));
-#elif 0
+#if 1
 	m_pd3dImmediateContext->ClearRenderTargetView(m_pRenderTargetView.Get(), reinterpret_cast<const float*>(&Colors::Black));
 	m_pd3dImmediateContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-
-	// »æÖÆ¼¸ºÎÄ£ĞÍ
-	m_pd3dImmediateContext->DrawIndexed(m_IndexCount, 0, 0);
-#elif 1
-	m_pd3dImmediateContext->ClearRenderTargetView(m_pRenderTargetView.Get(), reinterpret_cast<const float*>(&Colors::Black));
-	m_pd3dImmediateContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	for(int i = 0; i < 256; i++)
+	for(int i = 0; i < 2048; i++)
 	sample->Draw(m_pd3dImmediateContext.Get());
 	
 #endif
 	HR(m_pSwapChain->Present(0, 0));
 }
-
+//åˆå§‹åŒ–ç€è‰²å™¨
 bool GameApp::InitEffect()
 {
-	ComPtr<ID3DBlob> blob;
-
-	//3D ²¿·Ö
-
-	// ´´½¨¶¥µã×ÅÉ«Æ÷
-	HR(CreateShaderFromFile(LR"(HLSL\Triangle_VS.cso)", LR"(HLSL\Triangle_VS.hlsl)", "VS", "vs_5_0", blob.ReleaseAndGetAddressOf()));
-	HR(m_pd3dDevice->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pVertexShader.GetAddressOf()));
-	// ´´½¨²¢°ó¶¨¶¥µã²¼¾Ö
-	HR(m_pd3dDevice->CreateInputLayout(VertexPosColor::inputLayout, ARRAYSIZE(VertexPosColor::inputLayout),
-		blob->GetBufferPointer(), blob->GetBufferSize(), m_pVertexLayout.GetAddressOf()));
-
-	// ´´½¨ÏñËØ×ÅÉ«Æ÷
-	HR(CreateShaderFromFile(LR"(HLSL\Triangle_PS.cso)", LR"(HLSL\Triangle_PS.hlsl)", "PS", "ps_5_0", blob.ReleaseAndGetAddressOf()));
-	HR(m_pd3dDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pPixelShader.GetAddressOf()));
-
-	//2D²¿·Ö
-
-	// ´´½¨¶¥µã×ÅÉ«Æ÷(2D)
-	HR(CreateShaderFromFile(LR"(HLSL\VS_2D.cso)", LR"(HLSL\VS_2D.hlsl)", "VS_2D", "vs_5_0", blob.ReleaseAndGetAddressOf()));
-	HR(m_pd3dDevice->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pVertexShader2D.GetAddressOf()));
-	// ´´½¨¶¥µã²¼¾Ö(2D)
-	HR(m_pd3dDevice->CreateInputLayout(VertexPosTex::inputLayout, ARRAYSIZE(VertexPosTex::inputLayout),
-		blob->GetBufferPointer(), blob->GetBufferSize(), m_pVertexLayout2D.GetAddressOf()));
-
-	// ´´½¨ÏñËØ×ÅÉ«Æ÷(2D)
-	HR(CreateShaderFromFile(LR"(HLSL\PS_2D.cso)", LR"(HLSL\PS_2D.hlsl)", "PS_2D", "ps_5_0", blob.ReleaseAndGetAddressOf()));
-	HR(m_pd3dDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pPixelShader2D.GetAddressOf()));
+	//ç¼–è¯‘ç€è‰²å™¨å¹¶è®¾ç½®è¾“å…¥å¸ƒå±€
+	shader2D.CreateShader(m_pd3dDevice.Get(), LR"(HLSL\VS_2D)", LR"(HLSL\PS_2D)", "VS_2D", "PS_2D", 
+		VertexPosTex::inputLayout, ARRAYSIZE(VertexPosTex::inputLayout));
 
 	return true;
 }
 
 bool GameApp::InitResource()
 {
-#if 1
-	//³£Á¿»º³åÇø²¿·Ö
-	D3D11_BUFFER_DESC cbd;
-	ZeroMemory(&cbd, sizeof(cbd));
-	cbd.Usage = D3D11_USAGE_DYNAMIC;
-	cbd.ByteWidth = sizeof(VSConstantBuffer);
-	cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	// ĞÂ½¨ÓÃÓÚVSºÍPSµÄ³£Á¿»º³åÇø
-	HR(m_pd3dDevice->CreateBuffer(&cbd, nullptr, m_pConstantBuffers.GetAddressOf()));
-	m_pd3dImmediateContext->VSSetConstantBuffers(0, 1, m_pConstantBuffers.GetAddressOf());
-#endif
-
-
-	// ÉèÖÃÈı½ÇĞÎ¶¥µã
-	VertexPosColor vertices[] =
-	{
-		{ XMFLOAT3(0.0f, 0.5f, 0.5f), XMFLOAT4(0.0f, 1.0f, 0.0f, 0.5f) },
-		{ XMFLOAT3(0.5f, -0.5f, 0.5f), XMFLOAT4(0.0f, 0.0f, 1.0f, 0.5f) },
-		{ XMFLOAT3(-0.5f, -0.5f, 0.5f), XMFLOAT4(1.0f, 0.0f, 0.0f, 0.5f) }
-	};
-	// ÉèÖÃ¶¥µã»º³åÇøÃèÊö.
-	D3D11_BUFFER_DESC vbd;
-	ZeroMemory(&vbd, sizeof(vbd));
-	vbd.ByteWidth = sizeof vertices;
-	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbd.CPUAccessFlags = 0;
-	// ĞÂ½¨¶¥µã»º³åÇø
-	D3D11_SUBRESOURCE_DATA InitData;
-	ZeroMemory(&InitData, sizeof(InitData));
-	InitData.pSysMem = vertices;
-	HR(m_pd3dDevice->CreateBuffer(&vbd, &InitData, m_pVertexBuffer.GetAddressOf()));
-	
-
-	// ******************
-	// ¸øäÖÈ¾¹ÜÏß¸÷¸ö½×¶Î°ó¶¨ºÃËùĞè×ÊÔ´
-	//
-
-	// ÊäÈë×°Åä½×¶ÎµÄ¶¥µã»º³åÇøÉèÖÃ
-	const UINT stride[] = { sizeof(VertexPosColor) };	// ¿çÔ½×Ö½ÚÊı
-	const UINT offset[] = { 0 };						// ÆğÊ¼Æ«ÒÆÁ¿
-
-	m_pd3dImmediateContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(), stride, offset);
-
-
-	// ÉèÖÃÍ¼ÔªÀàĞÍ£¬Éè¶¨ÊäÈë²¼¾Ö
+	// è®¾ç½®å›¾å…ƒç±»å‹ä¸ºæ¯3ä¸ªç‚¹ä¸ºä¸€ä¸ªä¸‰è§’å½¢
 	m_pd3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	m_pd3dImmediateContext->IASetInputLayout(m_pVertexLayout.Get());
-	// ½«×ÅÉ«Æ÷°ó¶¨µ½äÖÈ¾¹ÜÏß
-	m_pd3dImmediateContext->VSSetShader(m_pVertexShader.Get(), nullptr, 0);
-	m_pd3dImmediateContext->PSSetShader(m_pPixelShader.Get(), nullptr, 0);
-
+	//è®¾ç½®é¢œè‰²åˆæˆä¸ºAlphaé€æ˜æ··åˆæ¸²æŸ“
 	m_pd3dImmediateContext->OMSetBlendState(RenderStates::BSTransparent.Get(), nullptr, 0xFFFFFFFF);
 
-	// ******************
-	// ÉèÖÃµ÷ÊÔ¶ÔÏóÃû
-	//
-	D3D11SetDebugObjectName(m_pVertexLayout.Get(), "VertexPosColorLayout");
-	D3D11SetDebugObjectName(m_pVertexBuffer.Get(), "VertexBuffer");
-	D3D11SetDebugObjectName(m_pVertexShader.Get(), "Trangle_VS");
-	D3D11SetDebugObjectName(m_pVertexShader2D.Get(), "VS_2D");
-
-	D3D11SetDebugObjectName(m_pPixelShader.Get(), "Trangle_PS");
-	D3D11SetDebugObjectName(m_pPixelShader2D.Get(), "PS_2D");
-
-	D3D11SetDebugObjectName(m_pConstantBuffers.Get(), "ConstantBuffers");
-
-
-
-	m_pd3dImmediateContext->IASetInputLayout(m_pVertexLayout2D.Get());
-#if 0
-	WCHAR strFile[40] = L"test.png";
-	HR(CreateWICTextureFromFile(m_pd3dDevice.Get(), strFile, nullptr, m_test_resource.GetAddressOf()));
-	
-	m_pd3dImmediateContext->IASetInputLayout(m_pVertexLayout2D.Get());
-	auto meshData = Geometry::Create2DShow();
-	ResetMesh(meshData);
-#else
 	sample = std::make_unique<GameObject>();
-#if 0
-	sample->SetTexture(m_pd3dDevice.Get(), L"test1.png", 0);
-	sample->SetTexture(m_pd3dDevice.Get(), L"test2.png", 1);
-#elif 1
+	//è½½å…¥çº¹ç†
 	sample->SetTexture(m_pd3dDevice.Get(), m_pd3dImmediateContext.Get(), 
 		{ LR"(Resource\test1.png)" , LR"(Resource\test2.png)" }, false);
-#endif
-	auto meshData = Geometry::Create2DShow();
-	sample->SetBuffer(m_pd3dDevice.Get(), meshData);
-	//ResetMesh(meshData);
-#endif
 
-	m_pd3dImmediateContext->IASetInputLayout(m_pVertexLayout2D.Get());
-	
-	m_pd3dImmediateContext->VSSetShader(m_pVertexShader2D.Get(), nullptr, 0);
-	m_pd3dImmediateContext->PSSetShader(m_pPixelShader2D.Get(), nullptr, 0);
-	//m_pd3dImmediateContext->PSSetShaderResources(0, 1, m_test_resource.GetAddressOf());
+	auto meshData = Geometry::Create2DShow(DirectX::XMFLOAT2(0, 0), DirectX::XMFLOAT2(1, 1));
+	sample->SetBuffer(m_pd3dDevice.Get(), meshData);
+	sample->CreateConstantBuffer(m_pd3dDevice.Get());
+
+	shader2D.SetShader(m_pd3dImmediateContext.Get());
+	shader2D.SetSamplerState(RenderStates::SSLinearWrap);
+	shader2D.SetSamplerState(m_pd3dImmediateContext.Get());
 	return true;
 }
 
@@ -242,34 +96,34 @@ bool GameApp::InitResource()
 template<class VertexType>
 bool GameApp::ResetMesh(const Geometry::MeshData<VertexType>& meshData)
 {
-	// ÊÍ·Å¾É×ÊÔ´
+	// é‡Šæ”¾æ—§èµ„æº
 	m_pVertexBuffer.Reset();
 	m_pIndexBuffer.Reset();
 
 
 
-	// ÉèÖÃ¶¥µã»º³åÇøÃèÊö
+	// è®¾ç½®é¡¶ç‚¹ç¼“å†²åŒºæè¿°
 	D3D11_BUFFER_DESC vbd;
 	ZeroMemory(&vbd, sizeof(vbd));
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	vbd.ByteWidth = (UINT)meshData.vertexVec.size() * sizeof(VertexType);
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vbd.CPUAccessFlags = 0;
-	// ĞÂ½¨¶¥µã»º³åÇø
+	// æ–°å»ºé¡¶ç‚¹ç¼“å†²åŒº
 	D3D11_SUBRESOURCE_DATA InitData;
 	ZeroMemory(&InitData, sizeof(InitData));
 	InitData.pSysMem = meshData.vertexVec.data();
 	HR(m_pd3dDevice->CreateBuffer(&vbd, &InitData, m_pVertexBuffer.GetAddressOf()));
 
-	// ÊäÈë×°Åä½×¶ÎµÄ¶¥µã»º³åÇøÉèÖÃ
-	UINT stride = sizeof(VertexType);			// ¿çÔ½×Ö½ÚÊı
-	UINT offset = 0;							// ÆğÊ¼Æ«ÒÆÁ¿
+	// è¾“å…¥è£…é…é˜¶æ®µçš„é¡¶ç‚¹ç¼“å†²åŒºè®¾ç½®
+	UINT stride = sizeof(VertexType);			// è·¨è¶Šå­—èŠ‚æ•°
+	UINT offset = 0;							// èµ·å§‹åç§»é‡
 
 	m_pd3dImmediateContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(), &stride, &offset);
 
 
 
-	// ÉèÖÃË÷Òı»º³åÇøÃèÊö
+	// è®¾ç½®ç´¢å¼•ç¼“å†²åŒºæè¿°
 	m_IndexCount = (UINT)meshData.indexVec.size();
 	D3D11_BUFFER_DESC ibd;
 	ZeroMemory(&ibd, sizeof(ibd));
@@ -277,15 +131,15 @@ bool GameApp::ResetMesh(const Geometry::MeshData<VertexType>& meshData)
 	ibd.ByteWidth = sizeof(DWORD) * m_IndexCount;
 	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	ibd.CPUAccessFlags = 0;
-	// ĞÂ½¨Ë÷Òı»º³åÇø
+	// æ–°å»ºç´¢å¼•ç¼“å†²åŒº
 	InitData.pSysMem = meshData.indexVec.data();
 	HR(m_pd3dDevice->CreateBuffer(&ibd, &InitData, m_pIndexBuffer.GetAddressOf()));
-	// ÊäÈë×°Åä½×¶ÎµÄË÷Òı»º³åÇøÉèÖÃ
+	// è¾“å…¥è£…é…é˜¶æ®µçš„ç´¢å¼•ç¼“å†²åŒºè®¾ç½®
 	m_pd3dImmediateContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
 
 
-	// ÉèÖÃµ÷ÊÔ¶ÔÏóÃû
+	// è®¾ç½®è°ƒè¯•å¯¹è±¡å
 	D3D11SetDebugObjectName(m_pVertexBuffer.Get(), "VertexBuffer");
 	D3D11SetDebugObjectName(m_pIndexBuffer.Get(), "IndexBuffer");
 
