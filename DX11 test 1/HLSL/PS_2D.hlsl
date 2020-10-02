@@ -10,7 +10,7 @@ float4 PS_2D(VertexPosHTex pIn) : SV_Target
     //else return g_Tex.Sample(g_SamLinear, 0);
 
 
-    return g_Tex.Sample(g_SamLinear, float3(pIn.Tex, pIn.PrimID));
+    return g_Tex.Sample(g_SamLinear, float3(pIn.Tex, pIn.Id));
     //return g_Tex.Sample(g_SamLinear, float3(pIn.Tex, pIn.PrimID));
 
 

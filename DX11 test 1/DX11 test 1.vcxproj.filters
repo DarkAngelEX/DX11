@@ -102,12 +102,21 @@
     <None Include="HLSL\Basic.hlsli">
       <Filter>着色器</Filter>
     </None>
+    <None Include="HLSL\MapBase.hlsli">
+      <Filter>着色器</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="HLSL\VS_2D.hlsl">
       <Filter>着色器</Filter>
     </FxCompile>
     <FxCompile Include="HLSL\PS_2D.hlsl">
+      <Filter>着色器</Filter>
+    </FxCompile>
+    <FxCompile Include="HLSL\MapPS.hlsl">
+      <Filter>着色器</Filter>
+    </FxCompile>
+    <FxCompile Include="HLSL\MapVS.hlsl">
       <Filter>着色器</Filter>
     </FxCompile>
   </ItemGroup>

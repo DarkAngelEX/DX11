@@ -80,7 +80,8 @@ private:
 
 	UINT m_IndexCount = 0;									// 绘制物体的索引数组大小
 
-	ShaderBase shader2D;
+	std::unique_ptr<ShaderBase> shader2D;
+	std::unique_ptr<ShaderBase> MapShader;
 	ComPtr<ID3D11VertexShader> m_pVertexShader2D;		// 用于2D的顶点着色器
 	ComPtr<ID3D11PixelShader> m_pPixelShader2D;			// 用于2D的像素着色器
 

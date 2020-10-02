@@ -2,10 +2,8 @@
 #include "MapBase.h"
 
 
-void MapBase::Init(ID3D11Device* device, ID3DBlob* blob) {
-	m_pBlob = blob;
-	device->CreateInputLayout(VertexType::inputLayout, ARRAYSIZE(VertexType::inputLayout),
-		m_pBlob->GetBufferPointer(), m_pBlob->GetBufferSize(), m_pVertexLayout.GetAddressOf());
+void MapBase::Init(ShaderBase* _Shader) {
+	Shader = _Shader;
 }
 
 //修改地图尺寸 更新内存部分
@@ -13,12 +11,12 @@ void MapBase::resize(UINT _width, UINT _height) {
 	width = _width;
 	height = _height;
 	m_Vertexs.resize(_width * _height * 4);
-	m_Indexs.resize(_width * _height * 4);
+	m_Indexs.resize(_width * _height * 6);
 	for (UINT h = 0; h < height; h++) {
 		for (UINT w = 0; w < width; w++) {
-			auto fun = [this](UINT w, UINT h, float depth = 0.99)->DirectX::XMFLOAT3 {
+			auto fun = [this](UINT w, UINT h, float depth = 0.9)->DirectX::XMFLOAT3 {
 				return DirectX::XMFLOAT3(range_width.x + (range_width.y - range_width.x) * w / width,
-					range_height.x + (range_height.y - range_height.x) * h / height, 0.99);
+					range_height.x + (range_height.y - range_height.x) * h / height, depth);
 			};
 			/*
 			1 2
@@ -26,17 +24,20 @@ void MapBase::resize(UINT _width, UINT _height) {
 			*/
 			auto ver_index = get_index(w, h) * 4;
 			m_Vertexs[ver_index + 0] = { fun(w    , h    ), DirectX::XMFLOAT2(0, 1), 0 };
-			m_Vertexs[ver_index + 1] = { fun(w + 1, h    ), DirectX::XMFLOAT2(0, 0), 0 };
+			m_Vertexs[ver_index + 1] = { fun(w    , h + 1), DirectX::XMFLOAT2(0, 0), 0 };
 			m_Vertexs[ver_index + 2] = { fun(w + 1, h + 1), DirectX::XMFLOAT2(1, 0), 0 };
-			m_Vertexs[ver_index + 3] = { fun(w    , h + 1), DirectX::XMFLOAT2(1, 1), 0 };
+			m_Vertexs[ver_index + 3] = { fun(w + 1, h    ), DirectX::XMFLOAT2(1, 1), 0 };
 			
 			auto ind_index = get_index(w, h) * 6;
-			m_Indexs[ind_index + 0] = 0;
-			m_Indexs[ind_index + 1] = 1;
-			m_Indexs[ind_index + 2] = 2;
-			m_Indexs[ind_index + 3] = 2;
-			m_Indexs[ind_index + 4] = 3;
-			m_Indexs[ind_index + 5] = 0;
+			m_Indexs[ind_index + 0] = ver_index + 0;
+			m_Indexs[ind_index + 1] = ver_index + 1;
+			m_Indexs[ind_index + 2] = ver_index + 2;
+			m_Indexs[ind_index + 3] = ver_index + 2;
+			m_Indexs[ind_index + 4] = ver_index + 3;
+			m_Indexs[ind_index + 5] = ver_index + 0;
+
+			int x = rand() % 2;
+			for (int i = 0; i < 4; i++)m_Vertexs[ver_index + i].tex_id = x;
 		}
 	}
 }
@@ -59,6 +60,7 @@ void MapBase::load(std::ifstream& in) {
 	}
 }
 
+//按队列更新顶点缓冲区
 void MapBase::update_VerBuffer_by_queue(ID3D11DeviceContext* deviceContext) {
 	if (vertex_changed.empty())return;
 	std::sort(vertex_changed.begin(), vertex_changed.end());
@@ -76,23 +78,33 @@ void MapBase::update_VerBuffer_by_queue(ID3D11DeviceContext* deviceContext) {
 	}
 	deviceContext->Unmap(m_pVertexBuffer.Get(), 0);
 }
+
+//整体更新顶点缓冲区
 void MapBase::update_all_VerBuffer(ID3D11DeviceContext* deviceContext) {
 	D3D11_MAPPED_SUBRESOURCE mappedData;
 	HR(deviceContext->Map(m_pVertexBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedData));
 	//memcpy_s(mappedData.pData, sizeof(Transform), &m_Transform, sizeof(Transform));
+#if 1
+	memcpy_s(mappedData.pData, m_Vertexs.size() * sizeof(VertexType), m_Vertexs.data(), m_Vertexs.size() * sizeof(VertexType));
+#else
 	for (UINT index = 0; index < m_Vertexs.size(); index += 4) {
 		for (UINT i = 0; i < 4; i++) {
 #if defined(_DEBUG) || defined(DEBUG)
-			assert(i == 0 || m_Vertexs[index * 4 + i].tex_id == m_Vertexs[index * 4 + i - 1].tex_id);
+			assert(i == 0 || m_Vertexs[index + i].tex_id == m_Vertexs[index + i - 1].tex_id);
 #endif
-			reinterpret_cast<VertexType*>(mappedData.pData)[index * 4 + i].tex_id = m_Vertexs[index * 4 + i].tex_id;
+			reinterpret_cast<VertexType*>(mappedData.pData)[index + i].tex_id = m_Vertexs[index + i].tex_id;
 		}
 	}
+#endif
 	deviceContext->Unmap(m_pVertexBuffer.Get(), 0);
 }
+
+//根据当前保存的顶点分配缓冲区
 void MapBase::SetBuffer(ID3D11Device* device) {
 	SetBuffer(device, m_Vertexs, m_Indexs);
 }
+
+//根据顶点数组分配缓冲区
 void MapBase::SetBuffer(ID3D11Device* device, const std::vector<VertexType>& vertexs, const std::vector<IndexType>& indexs) {
 	// 释放旧资源
 	m_pVertexBuffer.Reset();
@@ -110,8 +122,8 @@ void MapBase::SetBuffer(ID3D11Device* device, const std::vector<VertexType>& ver
 	//vbd.Usage = D3D11_USAGE_IMMUTABLE;
 	vbd.Usage = D3D11_USAGE_DYNAMIC;	//用于修改纹理标号
 	vbd.ByteWidth = (UINT)vertexs.size() * m_VertexStride;
-	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER | D3D11_CPU_ACCESS_WRITE;
-	vbd.CPUAccessFlags = 0;
+	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	// 新建顶点缓冲区
 	D3D11_SUBRESOURCE_DATA InitData;
 	ZeroMemory(&InitData, sizeof(InitData));
@@ -145,14 +157,19 @@ void MapBase::SetTexture(
 
 // 绘制
 void MapBase::Draw(ID3D11DeviceContext* deviceContext) {
-	update_VerBuffer_by_queue(deviceContext);
+	Shader->SetShader(deviceContext);	//设置着色器布局
+
+	//update_VerBuffer_by_queue(deviceContext);
+	update_all_VerBuffer(deviceContext);	//更新顶点
+
 	UINT strides = m_VertexStride;
 	UINT offsets = 0;
 
+	//设置缓冲区
 	deviceContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(), &strides, &offsets);
 	deviceContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	deviceContext->PSSetShaderResources(0, 1, m_pTextureView.GetAddressOf());
-	deviceContext->IASetInputLayout(m_pVertexLayout.Get());
+
 	deviceContext->DrawIndexed(m_IndexCount, 0, 0);
 }
 

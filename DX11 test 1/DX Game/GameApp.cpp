@@ -51,21 +51,30 @@ void GameApp::DrawScene()
 {
 	assert(m_pd3dImmediateContext);
 	assert(m_pSwapChain);
-#if 1
+
 	m_pd3dImmediateContext->ClearRenderTargetView(m_pRenderTargetView.Get(), reinterpret_cast<const float*>(&Colors::Black));
 	m_pd3dImmediateContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	for(int i = 0; i < 2048; i++)
+#if 0
+	//for(int i = 0; i < 2048; i++)
 	sample->Draw(m_pd3dImmediateContext.Get());
-	
+#elif 1
+	map->Draw(m_pd3dImmediateContext.Get());
 #endif
 	HR(m_pSwapChain->Present(0, 0));
 }
 //初始化着色器
 bool GameApp::InitEffect()
 {
+	shader2D = std::make_unique<ShaderBase>();
 	//编译着色器并设置输入布局
-	shader2D.CreateShader(m_pd3dDevice.Get(), LR"(HLSL\VS_2D)", LR"(HLSL\PS_2D)", "VS_2D", "PS_2D", 
+	shader2D->CreateShader(m_pd3dDevice.Get(), LR"(HLSL\VS_2D)", LR"(HLSL\PS_2D)", "VS_2D", "PS_2D", 
 		VertexPosTex::inputLayout, ARRAYSIZE(VertexPosTex::inputLayout));
+	shader2D->SetSamplerState(RenderStates::SSLinearWrap);
+
+	MapShader = std::make_unique<ShaderBase>();
+	MapShader->CreateShader(m_pd3dDevice.Get(), LR"(HLSL\MapVS)", LR"(HLSL\MapPS)", "VS", "PS",
+		MapBase::VertexType::inputLayout, ARRAYSIZE(MapBase::VertexType::inputLayout));
+	MapShader->SetSamplerState(RenderStates::SSLinearWrap);
 
 	return true;
 }
@@ -86,9 +95,16 @@ bool GameApp::InitResource()
 	sample->SetBuffer(m_pd3dDevice.Get(), meshData);
 	sample->CreateConstantBuffer(m_pd3dDevice.Get());
 
-	shader2D.SetShader(m_pd3dImmediateContext.Get());
-	shader2D.SetSamplerState(RenderStates::SSLinearWrap);
-	shader2D.SetSamplerState(m_pd3dImmediateContext.Get());
+#if 0
+	shader2D->SetShader(m_pd3dImmediateContext.Get());
+#elif 1
+	map = std::make_unique<MapBase>();
+	map->Init(MapShader.get());
+	map->resize(1000, 1000);
+	map->SetBuffer(m_pd3dDevice.Get());
+	map->SetTexture(m_pd3dDevice.Get(), m_pd3dImmediateContext.Get(),
+		{ LR"(Resource\test1.png)" , LR"(Resource\test2.png)" },false);
+#endif
 	return true;
 }
 
